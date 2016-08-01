@@ -4,7 +4,8 @@
   "description": "Lightweight Dependency Injection for JavaScript apps",
   "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "make build"
   },
   "repository": {
     "type": "git",
@@ -15,9 +16,6 @@
     "dependency",
     "injection",
     "lentils"
-  ],
-  "files": [
-    "build/**"
   ],
   "devDependencies": {
     "babel-cli": "^6.10.1",
