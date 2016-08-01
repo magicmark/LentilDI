@@ -1,0 +1,18 @@
+LentilDI
+tests
+build-examples
+coverage
+npm-debug.log
+.swp
+
+# OS X stuff
+.DS_Store
+.AppleDouble
+.LSOverride
+config.json
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
