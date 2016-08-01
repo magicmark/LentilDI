@@ -1,6 +1,6 @@
 {
-  "name": "lentil-di",
-  "version": "1.0.0",
+  "name": "lentildi",
+  "version": "0.0.1",
   "description": "Lightweight Dependency Injection for JavaScript apps",
   "main": "build/index.js",
   "scripts": {
