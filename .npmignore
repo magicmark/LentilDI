@@ -5,4 +5,8 @@
 .travis.yml
 Makefile
 tests
-!build
+
+build-examples
+coverage
+npm-debug.log
+.swp
