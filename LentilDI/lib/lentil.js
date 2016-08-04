@@ -16,8 +16,11 @@ export default class Lentil {
         // A mapping of some dependencies to some arguments.
         this.depArgList = new WeakMap();
 
-        // A mapping of provide dependency names to isntances
-        this.providedDepInstances = new Map();
+        // A mapping of provide dependency names to deps
+        this.providedDeps = new Map();
+
+        // Single Instances
+        this.singleInstances = new WeakMap();
     }
 
     create(root) {
@@ -26,9 +29,17 @@ export default class Lentil {
         return this.getInstance(root);
     }
 
-    addStaticDep(depName, depInstance) {
-        this.providedDepInstances.set(depName, depInstance);
+    provide(depName, depInstance) {
+        if (typeof depName !== 'string') {
+            throw new Error('Dep key must be a string!');
+        }
+
+        this.providedDeps.set(depName, depInstance);
         return this;
+    }
+
+    getProvided(depName) {
+        return this.providedDeps.get(depName);
     }
 
     getInstance(dep) {
@@ -40,8 +51,16 @@ export default class Lentil {
         return this;
     }
 
-    _getProvidedInstance(dep) {
-        return this.providedDepInstances.get(dep.name);
+    _getProvidedDep(lentilDep) {
+        return this.providedDeps.get(lentilDep.Requested);
+    }
+
+    _getSingleInstance(lentilDep) {
+        if (!this.singleInstances.has(lentilDep.Requested)) {
+            this.singleInstances.set(lentilDep.Requested, lentilDep.Requested());
+        }
+
+        return this.singleInstances.get(lentilDep.Requested);
     }
 
     _addDependency(dep) {

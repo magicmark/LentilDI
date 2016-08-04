@@ -20,11 +20,11 @@ class Italian extends LentilBase {
 
 class HelloWorld extends LentilBase {
 
-    static lentilDeps () {
+    static lentilDeps() {
         return {
             french: French,
             italian: Italian,
-        }
+        };
     }
 
     sayHello() {

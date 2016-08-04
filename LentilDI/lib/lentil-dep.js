@@ -1,8 +1,16 @@
-const Static = (depName) => ({
-    LentilStaticInstance: true,
-    name: depName,
+const Provided = (depName) => ({
+    LentilDep: true,
+    DepType: 'LentilProvided',
+    Requested: depName,
+});
+
+const SingleInstance = (depObject) => ({
+    LentilDep: true,
+    DepType: 'LentilSingleInstance',
+    Requested: depObject,
 });
 
 export default {
-    Static,
+    Provided,
+    SingleInstance,
 };

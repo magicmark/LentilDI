@@ -9,8 +9,10 @@ const constructorWithLentil = function constructorWithLentil() {
             if (lentil.constructor._isLentil(dep)) {
                 const depInstance = lentil.getInstance(dep);
                 this[depName] = depInstance;
-            } else if (dep.LentilStaticInstance) {
-                this[depName] = lentil._getProvidedInstance(dep);
+            } else if (dep.LentilDep && dep.DepType === 'LentilProvided') {
+                this[depName] = lentil._getProvidedDep(dep);
+            } else if (dep.LentilDep && dep.DepType === 'LentilSingleInstance') {
+                this[depName] = lentil._getSingleInstance(dep);
             } else {
                 this[depName] = dep;
             }
@@ -20,10 +22,18 @@ const constructorWithLentil = function constructorWithLentil() {
 
 const constructorWithoutLentil = function constructorWithoutLentil(...args) {
     if (this.constructor.lentilDeps) {
+        let depsToWire = this.constructor.lentilDeps();
+
         if (args.length) {
-            const depsToWire = args[args.length - 1];
+            const overwriteDepsToWire = args[args.length - 1];
+            depsToWire = Object.assign({}, depsToWire, overwriteDepsToWire);
+
             Object.keys(depsToWire).forEach(depName => {
                 const dep = depsToWire[depName];
+                if (dep.LentilDep) {
+                    return;
+                }
+
                 this[depName] = dep;
             });
         } else {
