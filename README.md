@@ -17,7 +17,7 @@ With LentilDI, you can go from something like this:
 const tuba = new Tuba();
 const horn = new Horn();
 const conductor = new Conductor('Bernstein');
-const brassSection = new BrassSection(conductor, tuba, horn, fs);
+const brassSection = new BrassSection(conductor, tuba, horn, fs, os);
 const orchestra = new Orchestra(conductor, brassSection);
 ```
 
@@ -36,11 +36,12 @@ Because you like to easily test your modules, you might be passing in your depen
 ```javascript
 class BrassSection {
 
-    constructor (conductor, tuba, horn, fs) {
+    constructor (conductor, tuba, horn, fs, os) {
         this.conductor = conductor;
         this.tuba = tuba;
         this.horn = horn;
         this.fs = fs;
+        this.os = os;
     }
 
     loadSheetMusic () {
