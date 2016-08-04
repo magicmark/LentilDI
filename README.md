@@ -16,8 +16,8 @@ With LentilDI, you can go from something like this:
 ```javascript
 const tuba = new Tuba();
 const horn = new Horn();
-const brassSection = new BrassSection(tuba, horn);
 const conductor = new Conductor('Bernstein');
+const brassSection = new BrassSection(conductor, tuba, horn, fs);
 const orchestra = new Orchestra(conductor, brassSection);
 ```
 
@@ -28,6 +28,51 @@ const lentil = new Lentil();
 lentil.setArgs(Conductor, ['Bernstein']);
 const orchestra = lentil.create(Orchestra);
 ```
+
+## But wait, there's more!
+
+Because you like to easily test your modules, you might be passing in your dependencies and wiring them up manually as such:
+
+```javascript
+class BrassSection {
+
+    constructor (conductor, tuba, horn, fs) {
+        this.conductor = conductor;
+        this.tuba = tuba;
+        this.horn = horn;
+        this.fs = fs;
+    }
+
+    loadSheetMusic () {
+        const sheetMusic = this.conductor.getScore();
+        this.fs.readFile(sheetMusic, ...
+    }
+    
+    ...
+```
+
+When we use LentilDI, we get that wiring done for us for free:
+
+```javascript
+class BrassSection extends LentilBase {
+
+    static lentilDeps () {
+        return {
+            conductor: Conductor,
+            tuba: Tuba,
+            horn: Horn,
+            fs,
+        }
+    }
+    
+    loadSheetMusic () {
+        const sheetMusic = this.conductor.getScore();
+        this.fs.readFile(sheetMusic, ...
+    }
+    
+    ...
+```
+
 
 ---
 
