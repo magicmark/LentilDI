@@ -1,12 +1,10 @@
-![LentilDI Logo](http://i.imgur.com/3F81rOE.png)
+![LentilDI Logo](http://i.imgur.com/BKDQnkU.png)
 
 # LentilDI
+==========
 
----
 [![npm](https://img.shields.io/npm/v/lentildi.svg?maxAge=2592000)]()
 [![travis](https://travis-ci.org/magicmark/LentilDI.svg?branch=master)]()
-
-> Lightweight ES6 Dependency Injection :)
 
 **LentilDI** lets you build apps without the pain of having to wire up and manually manage your dependency tree.
 
