@@ -2,9 +2,9 @@
 
 LentilDI
 ========
-[![travis](https://travis-ci.org/magicmark/LentilDI.svg?branch=master)]()
+[![travis](https://travis-ci.org/magicmark/LentilDI.svg?branch=master)](https://travis-ci.org/magicmark/LentilDI)
 [![Coverage Status](https://coveralls.io/repos/github/magicmark/LentilDI/badge.svg?branch=master)](https://coveralls.io/github/magicmark/LentilDI?branch=master)
-[![npm](https://img.shields.io/npm/v/lentildi.svg?maxAge=2592000)]()
+[![npm](https://img.shields.io/npm/v/lentildi.svg?maxAge=2592000)](https://www.npmjs.com/package/lentildi)
 
 Lightweight + Simple ES6 Dependency Injection :)
 
