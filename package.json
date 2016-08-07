@@ -1,6 +1,6 @@
 {
   "name": "lentildi",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Lightweight Dependency Injection for JavaScript apps",
   "main": "build/index.js",
   "scripts": {
