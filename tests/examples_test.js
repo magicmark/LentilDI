@@ -16,7 +16,7 @@ describe('Examples', function () {
 
         exec('node build-examples/hello_world/index.js', (err, stdout, stderr) => { 
             if (err || stderr) {
-                chai.assert.fail(err, stderr);
+                throw new Error(err, stderr);
             }
 
             chai.assert.equal(stdout.trim(), validOutput);
@@ -34,7 +34,7 @@ describe('Examples', function () {
 
         exec('node build-examples/orchestra/index.js', (err, stdout, stderr) => { 
             if (err || stderr) {
-                chai.assert.fail(err, stderr);
+                throw new Error(err, stderr);
             }
 
             chai.assert.equal(stdout.trim(), validOutput);

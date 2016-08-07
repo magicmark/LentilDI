@@ -4,7 +4,7 @@ import {
 
 export default class Horn extends LentilBase {
 
-    playMusic (music) {
+    playMusic(music) {
         console.log(`Horn is playing music from ${music}`);
     }
 

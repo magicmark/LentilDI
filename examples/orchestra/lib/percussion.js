@@ -5,19 +5,19 @@ import {
 
 export default class Percussion extends LentilBase {
 
-    static lentilDeps () {
+    static lentilDeps() {
         return {
             venue: LentilDep.Provided('venue'),
         };
     }
 
-    constructor (bpm, ...args) {
+    constructor(bpm, ...args) {
         super(...args);
 
         this.bpm = bpm;
     }
 
-    beatDrums () {
+    beatDrums() {
         if (this.venue.acoustics === 'Bad') {
             console.log(`Playing the big drums at ${this.bpm}BPM!`);
         } else if (this.venue.acoustics === 'Good') {

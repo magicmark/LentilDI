@@ -116,8 +116,8 @@ export default class Lentil {
      */
     setArgs(dep, argList) {
         if (!Lentil._isLentil(dep)) {
-            throw new Error('Cannot set args of non Lentil-type module.');        
-        } 
+            throw new Error('Cannot set args of non Lentil-type module.');
+        }
 
         this._depArgList.set(dep, argList);
         return this;

@@ -6,19 +6,19 @@ import path from 'path';
 
 export default class Conductor extends LentilBase {
 
-    static lentilDeps () {
+    static lentilDeps() {
         return {
-            path
+            path,
         };
     }
 
-    constructor (name, ...args) {
+    constructor(name, ...args) {
         super(...args);
 
         console.log(`${name} is about to conduct!`);
     }
 
-    setSymphony (symphonyName) {
+    setSymphony(symphonyName) {
         const sheetMusic = this.path.join('..', 'sheet_music', `${symphonyName}.pdf`);
 
         return sheetMusic;

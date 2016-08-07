@@ -4,7 +4,7 @@ import {
 
 export default class Tuba extends LentilBase {
 
-    playMusic (music) {
+    playMusic(music) {
         console.log(`Tuba is playing music from ${music}`);
     }
 

@@ -1,7 +1,6 @@
 import {
     Lentil,
     LentilBase,
-    LentilDep,
 } from 'lentildi';
 
 import BrassSection from './lib/brass_section.js';
@@ -24,7 +23,7 @@ class Orchestra extends LentilBase {
         };
     }
 
-    playSymphony (symphony) {
+    playSymphony(symphony) {
         // Prepare conductor & get sheet music
         const sheetMusic = this.conductor.setSymphony(symphony);
 
@@ -35,7 +34,6 @@ class Orchestra extends LentilBase {
     }
 
 }
-
 
 
 // Create Lentil App

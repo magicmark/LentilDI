@@ -7,14 +7,14 @@ import Tuba from './tuba.js';
 
 export default class BrassSection extends LentilBase {
 
-    static lentilDeps () {
+    static lentilDeps() {
         return {
             horn: Horn,
             tuba: Tuba,
         };
     }
 
-    playMusic (music) {
+    playMusic(music) {
         this.horn.playMusic(music);
         this.tuba.playMusic(music);
     }
