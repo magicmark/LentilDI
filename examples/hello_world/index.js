@@ -1,20 +1,24 @@
 import {
     Lentil,
     LentilBase,
-} from 'lentil-di';
+} from 'lentildi';
 
 
 class French extends LentilBase {
+
     sayBonjour() {
         console.log('Bonjour Le Monde!');
     }
+
 }
 
 
 class Italian extends LentilBase {
+
     sayCiao() {
         console.log('Ciao Mondo!');
     }
+
 }
 
 
@@ -28,13 +32,13 @@ class HelloWorld extends LentilBase {
     }
 
     sayHello() {
-        this.french.sayHello();
+        this.french.sayBonjour();
         this.italian.sayCiao();
     }
 
 }
 
-const myLentilApp = new Lentil();
-const helloWorld = myLentilApp.create(HelloWorld);
+const lentil = new Lentil();
+const helloWorld = lentil.create(HelloWorld);
 
 helloWorld.sayHello();

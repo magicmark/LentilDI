@@ -1,21 +1,13 @@
-const constructorWithLentil = function constructorWithLentil() {
-    if (this.constructor.lentilDeps) {
-        const lentil = this.__lentil_context__;
+const constructorWithLentil = function constructorWithLentil(...args) {
+    const lentil = this.__lentil_context__;
 
-        const depsToWire = this.constructor.lentilDeps();
-        Object.keys(depsToWire).forEach(depName => {
-            const dep = depsToWire[depName];
+    // Get the deps
+    const depsToWire = args[args.length - 1];
 
-            if (lentil.constructor._isLentil(dep)) {
-                const depInstance = lentil.getInstance(dep);
-                this[depName] = depInstance;
-            } else if (dep.LentilDep && dep.DepType === 'LentilProvided') {
-                this[depName] = lentil._getProvidedDep(dep);
-            } else if (dep.LentilDep && dep.DepType === 'LentilSingleInstance') {
-                this[depName] = lentil._getSingleInstance(dep);
-            } else {
-                this[depName] = dep;
-            }
+    if (depsToWire) {
+        // Wire each dep instance to `this`
+        Object.keys(depsToWire).forEach(key => {
+            this[key] = lentil.resolveLentilDep(depsToWire[key]);
         });
     }
 };
@@ -30,14 +22,14 @@ const constructorWithoutLentil = function constructorWithoutLentil(...args) {
 
             Object.keys(depsToWire).forEach(depName => {
                 const dep = depsToWire[depName];
-                if (dep.LentilDep) {
-                    return;
+                if (dep.isLentilDep) {
+                    throw new Error('Could not resolve Lentil Dependency');
                 }
 
                 this[depName] = dep;
             });
         } else {
-            throw new Error('Could not construct Lentil Class');
+            throw new Error('Could not resolve lentilDeps');
         }
     }
 };

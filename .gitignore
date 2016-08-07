@@ -4,6 +4,7 @@ build-examples
 coverage
 npm-debug.log
 .swp
+jsdoc
 
 # OS X stuff
 .DS_Store

@@ -9,6 +9,11 @@ Lightweight + Simple ES6 Dependency Injection :)
 
 **LentilDI** lets you build apps without the pain of having to wire up and manually manage your dependency tree.
 
+LentilDI has an emphasis on:
+
+* Easy testability of modules
+* Reduction of boilerplate dependency management
+
 ## Example
 
 With LentilDI, you can go from something like this:
@@ -16,7 +21,7 @@ With LentilDI, you can go from something like this:
 ```javascript
 const tuba = new Tuba();
 const horn = new Horn();
-const conductor = new Conductor('Bernstein');
+const conductor = new Conductor('Snoop Dogg');
 const brassSection = new BrassSection(conductor, tuba, horn, fs, os);
 const orchestra = new Orchestra(conductor, brassSection);
 ```

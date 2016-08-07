@@ -1,83 +1,234 @@
 import LentilBase from './lentil-base.js';
+import LentilDep, { LentilDepType } from './lentil-dep.js';
 
 export default class Lentil {
 
+    constructor() {
+        /**
+         * Stores all instances of raw LentilDepType.Lentil deps
+         *
+         * Stores all Lentil-type dependencies, mapped to a single instance thereof.
+         *
+         * @type {WeakMap} LentilBase -> object (instance of LentilBase)
+         * @private
+         */
+        this._depInstances = new WeakMap();
+
+
+        /**
+         * Stores all instances of raw LentilDepType.Lentil deps
+         *
+         * Stores all Lentil-type dependencies, mapped to their sub-dependencies.
+         *
+         * @type {WeakMap} LentilBase -> object
+         * @private
+         */
+        this._depDependencies = new WeakMap();
+
+
+        /*
+         * Stores arguments to a raw LentilDepType.Lentil dep
+         *
+         * Stores some Lentil-type dependencies, mapped to an array of some arguments.
+         *
+         * (Used when calling lentil.setArgs() )
+         *
+         * @type {WeakMap} LentilBase -> Array.<string|object>
+         * @private
+         */
+        this._depArgList = new WeakMap();
+
+
+        /*
+         * Stores instances of raw LentilDepType.Provided deps
+         *
+         * A mapping of provided dependency names to whatever.
+         *
+         * (Used when calling lentil.provide() )
+         *
+         * @type {Map} string -> string|object
+         * @private
+         */
+        this._providedDeps = new Map();
+    }
+
+    /**
+     * Tests if an object is a Lentil class that extends from LentilBase
+     *
+     * @param {object} dep - The possible Lentil-type class
+     * @return {boolean}
+     * @private
+     */
     static _isLentil(dep) {
         return (dep.prototype instanceof LentilBase);
     }
 
-    constructor() {
-        // Stores all dependencies, mapped to their sub-dependencies.
-        this.allDeps = new WeakMap();
+    /**
+     * Main entry into LentilDI. Creates a Lentil-type module (and with it, its dependency tree)
+     *
+     * @param  {LenilBase} dep - Lentil type dependency
+     * @return {LenilBase} Initialised dependency
+     */
+    create(dep) {
+        // Turn dep into a LentilDep
+        const lentilDep = LentilDep.Lentil(dep);
 
-        // Stores all dependencies, mapped to a single instance thereof.
-        this.depInstances = new WeakMap();
+        // Construct dependency tree
+        this._addDependency(lentilDep);
 
-        // A mapping of some dependencies to some arguments.
-        this.depArgList = new WeakMap();
+        // Initialise everything in dependency tree
+        this._initialiseAllDeps(lentilDep);
 
-        // A mapping of provide dependency names to deps
-        this.providedDeps = new Map();
-
-        // Single Instances
-        this.singleInstances = new WeakMap();
+        // Return the root dep
+        return this.resolveLentilDep(lentilDep);
     }
 
-    create(root) {
-        this._addDependency(root);
-        this._initialiseAllDeps(root);
-        return this.getInstance(root);
-    }
 
-    provide(depName, depInstance) {
+    /**
+     * ====================================================
+     * Public methods to set dependencies
+     * ====================================================
+     */
+
+
+    /**
+     * Gives LentilDI an arbitrary dependency, available through LentilDep.Provided
+     *
+     * @param  {string} depName - The dependency name
+     * @param  {object|string} depInstance - The dependency name object/value
+     * @return {Lentil}
+     */
+    provide(depName, providedDep) {
         if (typeof depName !== 'string') {
-            throw new Error('Dep key must be a string!');
+            throw new Error('Provided dependency key must be a string.');
         }
 
-        this.providedDeps.set(depName, depInstance);
+        this._providedDeps.set(depName, providedDep);
         return this;
     }
 
-    getProvided(depName) {
-        return this.providedDeps.get(depName);
-    }
-
-    getInstance(dep) {
-        return this.depInstances.get(dep);
-    }
-
+    /**
+     * Gives LentilDI the constructor arguments for a LentilDep.Lentil module
+     *
+     * @param {LentilBase} dep - The Lentil module for which we are giving args
+     * @param {Array.<string>} argList - Array of strings
+     * @return {Lentil}
+     */
     setArgs(dep, argList) {
-        this.depArgList.set(dep, argList);
+        this._depArgList.set(dep, argList);
         return this;
     }
 
-    _getProvidedDep(lentilDep) {
-        return this.providedDeps.get(lentilDep.Requested);
-    }
 
-    _getSingleInstance(lentilDep) {
-        if (!this.singleInstances.has(lentilDep.Requested)) {
-            this.singleInstances.set(lentilDep.Requested, lentilDep.Requested());
+    /**
+     * ====================================================
+     * Public methods to retrieve dependencies
+     * ====================================================
+     */
+
+
+    /**
+     * Convenience public method that is vaguely named 'getInstance'. In this case,
+     * we assume the type to be LentilDepType.Lentil (a class that extends from LentilBase).
+     *
+     * Internally, we will prefer resolveLentilDep, which takes an encapsulating LentilDep.
+     *
+     * @param {LentilBase} dep - Requested dependency
+     * @return {?LentilBase}
+     */
+    getInstance(dep) {
+        if (!Lentil._isLentil(dep)) {
+            throw new Error('Requested class instance does not extend from LentilBase.');
         }
 
-        return this.singleInstances.get(lentilDep.Requested);
+        return this.resolveLentilDep(LentilDep.Lentil(dep));
     }
 
-    _addDependency(dep) {
+    /**
+     * Convenience public method to get 'provided' dependencies via .provide().
+     *
+     * Internally, we will prefer resolveLentilDep, which takes an encapsulating LentilDep.
+     *
+     * @param {string} depName - Requested dependency
+     * @return {?object}
+     */
+    getProvided(depName) {
+        if (typeof depName !== 'string') {
+            throw new Error('Provided dependency key must be a string.');
+        }
+
+        return this.resolveLentilDep(LentilDep.Provided(depName));
+    }
+
+    /**
+     * Gets the requested dependency from a LentilDep object
+     *
+     * @param {LentilDep} lentilDep - Requested dependency to resolve
+     * @return {?object|string}
+     */
+    resolveLentilDep(lentilDep) {
+        if (!lentilDep.isLentilDep) {
+            throw new Error('Requested dependency is not a LentilDep object.');
+        }
+
+        if (lentilDep.depType === LentilDepType.Lentil) {
+            return this._depInstances.get(lentilDep.requested);
+        }
+
+        if (lentilDep.depType === LentilDepType.Provided) {
+            return this._providedDeps.get(lentilDep.requested);
+        }
+
+        if (lentilDep.depType === LentilDepType.Regular) {
+            return lentilDep.requested;
+        }
+
+        if (lentilDep.depType === LentilDepType.SingleInstance) {
+            throw new Error('This is not yet implemented!');
+        }
+
+        throw new Error(`Cannot resolve dependency for ${lentilDep}`);
+    }
+
+
+    /**
+     * ====================================================
+     * Private methods to construct dependencies
+     * ====================================================
+     */
+
+    _getAllDepDependencies(depInstance) {
+        if (!(depInstance instanceof LentilBase)) {
+            throw new Error('Cannot get dependencies for non LentilBase type object');
+        }
+
+        return this._depDependencies();
+    }
+
+    /**
+     * Adds LentilDep dependency to our dependency tree.
+     *
+     * @param {LentilDep} dep - Dependency to
+     * @private
+     */
+    _addDependency(lentilDep) {
         // Check to ensure dependency is something we need to handle.
-        if (!Lentil._isLentil(dep)) {
+        // Only LentilDepType.Lentil deps have dependencies that we can process.
+        if (lentilDep.depType !== LentilDepType.Lentil) {
             return;
         }
 
+        const rawDep = lentilDep.requested;
+
         // Check if we've already seen and added this dependency.
-        if (this.allDeps.has(dep)) {
+        if (this._depDependencies.has(rawDep)) {
             return;
         }
 
         // Create a reference back to Lentil on the dependency prototype, so we
         // can access ourself later and ask for the sub-dependencies.
         Object.defineProperty(
-            dep.prototype, '__lentil_context__', {
+            rawDep.prototype, '__lentil_context__', {
                 enumerable: false,
                 configurable: false,
                 writable: false,
@@ -86,29 +237,63 @@ export default class Lentil {
         );
 
         // Check if this dep has any sub-deps. If so, we'll want to recursively
-        // have Lentil add them via this method.
-        if (dep.lentilDeps) {
-            const subDeps = dep.lentilDeps();
-            Object.keys(subDeps).forEach(key => {
-                this._addDependency(subDeps[key]);
-            });
-
-            this.allDeps.set(dep, subDeps);
+        // have LentilDI add them via this method.
+        if (rawDep.lentilDeps) {
+            // Get the deps declared from static lentilDeps ()
+            const subDeps = this._getEncapsulatedLentilDeps(rawDep);
+            this._depDependencies.set(rawDep, subDeps);
         }
     }
 
+    /**
+     * Takes the object returned by lentilDeps(). Enumerates it, adds each dep
+     * back to LentilDI. Returns new object where each dep is encapsulated.
+     *
+     * @param {LentilBase} rawDep - A raw lentil dep
+     * @return {object} Encapsulated sub-dependencies
+     * @private
+     */
+    _getEncapsulatedLentilDeps(rawDep) {
+        const subDeps = rawDep.lentilDeps();
 
-    _getReverseBFS(root) {
+        Object.keys(subDeps).forEach(key => {
+            const subDep = subDeps[key];
+
+            // Check if subDep is already encapsulated
+            if (!subDep.isLentilDep) {
+                // Turn a dep into a LentilDep
+
+                if (Lentil._isLentil(subDep)) {
+                    subDeps[key] = LentilDep.Lentil(subDep);
+                } else {
+                    subDeps[key] = LentilDep.Regular(subDep);
+                }
+            }
+
+            this._addDependency(subDeps[key]);
+        });
+
+        return subDeps;
+    }
+
+    /**
+     * Takes a root dependency and constructs a dependency tree for it,
+     *
+     * @param {LentilDep} rootLentilDep - The dependency tree's root LentilDep
+     * @return {Array.<LentilDep>}      [description]
+     * @private
+     */
+    _getReverseBFS(rootLentilDep) {
         const list = [];
 
         // Breadth First Search Algorithm
-        const queue = [root];
+        const queue = [rootLentilDep];
 
         while (queue.length) {
             const dep = queue.shift();
             list.push(dep);
 
-            const subDeps = this.allDeps.get(dep) || [];
+            const subDeps = this._depDependencies.get(dep.requested) || {};
             Object.keys(subDeps).forEach(key => {
                 queue.push(subDeps[key]);
             });
@@ -119,35 +304,56 @@ export default class Lentil {
         return list;
     }
 
-
-    _initialiseAllDeps(root) {
-        const depsList = this._getReverseBFS(root);
+    /**
+     * Takes a 'root' dependency and initialises all its sub dependencies.
+     *
+     * @param {LentilDep} rootLentilDep - The dependency tree's root LentilDep
+     * @private
+     */
+    _initialiseAllDeps(rootLentilDep) {
+        const depsList = this._getReverseBFS(rootLentilDep);
 
         for (const dep of depsList) {
             // Check if dependency needs initialising by us
-            if (!Lentil._isLentil(dep)) {
+            if (!Lentil._isLentil(dep.requested)) {
                 continue;
             }
 
             // Check if dependency has already been initialised
-            if (!this.depInstances.has(dep)) {
-                let depInstance;
-
-                // Check to see if there are extra args to pass
-                const extraArgs = this.depArgList.get(dep);
-                if (extraArgs) {
-                    // http://stackoverflow.com/a/8843181
-                    depInstance = new (Function.prototype.bind.apply(dep,
-                        [null].concat(extraArgs)
-                    ));
-                } else {
-                    // eslint-disable-next-line new-cap
-                    depInstance = new dep();
-                }
-
-                this.depInstances.set(dep, depInstance);
+            if (!this._depInstances.has(dep.requested)) {
+                this._initialiseDep(dep);
             }
         }
+    }
+
+    /**
+     * Takes a Lentil-type LentilDep and constructs the requested dep.
+     *
+     * @param {LentilDep} lentilDep - The encapsulating LentilDep to construct.
+     * @private
+     */
+    _initialiseDep(lentilDep) {
+        if (lentilDep.depType !== LentilDepType.Lentil) {
+            return;
+        }
+
+        if (this._depInstances.has(lentilDep.requested)) {
+            return;
+        }
+
+        // Check to see if there are any arguments to pass to the class constructor
+        const extraArgs = this._depArgList.get(lentilDep.requested);
+
+        // Get the LentilDeps
+        const subDeps = this._depDependencies.get(lentilDep.requested);
+
+        // Create dependency instance.
+        const depInstance = Reflect.construct(lentilDep.requested,
+            [].concat(extraArgs).concat(subDeps)
+        );
+
+        // Store dep instance
+        this._depInstances.set(lentilDep.requested, depInstance);
     }
 
 }
