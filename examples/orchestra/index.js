@@ -1,5 +1,6 @@
 import {
     Lentil,
+    LentilBase,
     LentilDep,
 } from 'lentildi';
 
@@ -13,7 +14,7 @@ const Venue = {
 };
 
 
-class Orchestra {
+class Orchestra extends LentilBase {
 
     static lentilDeps() {
         return {
@@ -25,12 +26,12 @@ class Orchestra {
 
     playSymphony (symphony) {
         // Prepare conductor & get sheet music
-        const sheetMusic = conductor.setSymphony(symphony);
+        const sheetMusic = this.conductor.setSymphony(symphony);
 
         // Give music to instruments
-        brassSection.playMusic(sheetMusic);
+        this.brassSection.playMusic(sheetMusic);
         // Start the timpani
-        percussion.beatDrums();
+        this.percussion.beatDrums();
     }
 
 }

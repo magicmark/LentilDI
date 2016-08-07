@@ -115,6 +115,10 @@ export default class Lentil {
      * @return {Lentil}
      */
     setArgs(dep, argList) {
+        if (!Lentil._isLentil(dep)) {
+            throw new Error('Cannot set args of non Lentil-type module.');        
+        } 
+
         this._depArgList.set(dep, argList);
         return this;
     }
@@ -311,17 +315,17 @@ export default class Lentil {
      * @private
      */
     _initialiseAllDeps(rootLentilDep) {
-        const depsList = this._getReverseBFS(rootLentilDep);
+        const lentilDepsList = this._getReverseBFS(rootLentilDep);
 
-        for (const dep of depsList) {
+        for (const lentilDep of lentilDepsList) {
             // Check if dependency needs initialising by us
-            if (!Lentil._isLentil(dep.requested)) {
+            if (lentilDep.depType !== LentilDepType.Lentil) {
                 continue;
             }
 
             // Check if dependency has already been initialised
-            if (!this._depInstances.has(dep.requested)) {
-                this._initialiseDep(dep);
+            if (!this._depInstances.has(lentilDep.requested)) {
+                this._initialiseDep(lentilDep);
             }
         }
     }

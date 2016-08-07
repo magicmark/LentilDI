@@ -15,8 +15,8 @@ export default class BrassSection extends LentilBase {
     }
 
     playMusic (music) {
-        this.horn.playMusic();
-        this.tuba.playMusic();
+        this.horn.playMusic(music);
+        this.tuba.playMusic(music);
     }
 
 }

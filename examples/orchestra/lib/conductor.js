@@ -2,7 +2,7 @@ import {
     LentilBase,
 } from 'lentildi';
 
-import 'path';
+import path from 'path';
 
 export default class Conductor extends LentilBase {
 
@@ -15,11 +15,11 @@ export default class Conductor extends LentilBase {
     constructor (name, ...args) {
         super(...args);
 
-        console.log(`Initialising orchestra, conducted by ${name}.`);
+        console.log(`${name} is about to conduct!`);
     }
 
     setSymphony (symphonyName) {
-        const sheetMusic = this.path.join('../sheet_music', symphonyName, '.pdf');
+        const sheetMusic = this.path.join('..', 'sheet_music', `${symphonyName}.pdf`);
 
         return sheetMusic;
     }
