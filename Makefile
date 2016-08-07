@@ -27,11 +27,11 @@ jsdoc: node_modules
 	./node_modules/.bin/jsdoc LentilDI/lib/lentil.js -c .jsdoc.json -r -d jsdoc
 
 .PHONY: eslint
-eslint:
+eslint: node_modules
 	node_modules/.bin/eslint .
 
 .PHONY: eslint-fix
-eslint-fix:
+eslint-fix: node_modules
 	node_modules/.bin/eslint --fix .
 
 .PHONY: clean
