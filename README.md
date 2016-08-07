@@ -2,17 +2,22 @@
 
 LentilDI
 ========
-[![npm](https://img.shields.io/npm/v/lentildi.svg?maxAge=2592000)]()
 [![travis](https://travis-ci.org/magicmark/LentilDI.svg?branch=master)]()
+[![Coverage Status](https://coveralls.io/repos/github/magicmark/LentilDI/badge.svg?branch=master)](https://coveralls.io/github/magicmark/LentilDI?branch=master)
+[![npm](https://img.shields.io/npm/v/lentildi.svg?maxAge=2592000)]()
 
 Lightweight + Simple ES6 Dependency Injection :)
 
-**LentilDI** lets you build apps without the pain of having to wire up and manually manage your dependency tree.
+**LentilDI** lets you build apps without the pain of having to wire up and manually manage your dependency tree, emphasising:
 
-LentilDI has an emphasis on:
+* Ease of testing of modules
+* Reduction of boilerplate dependency juggling
 
-* Easy testability of modules
-* Reduction of boilerplate dependency management
+## Install
+
+```
+$ npm install --save lentildi
+```
 
 ## Example
 
@@ -30,7 +35,7 @@ To something like this:
 
 ```javascript
 const lentil = new Lentil();
-lentil.setArgs(Conductor, ['Bernstein']);
+lentil.setArgs(Conductor, ['Snoop Dogg']);
 const orchestra = lentil.create(Orchestra);
 ```
 

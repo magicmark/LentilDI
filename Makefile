@@ -40,3 +40,4 @@ clean:
 	rm -rf build-examples
 	rm -rf coverage
 	rm -rf jsodc
+	rm -rf node_modules
