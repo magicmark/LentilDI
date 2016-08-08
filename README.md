@@ -13,6 +13,8 @@ Lightweight + Simple ES6 Dependency Injection :)
 * Ease of module testing
 * Reduction of boilerplate dependency juggling
 
+Check out the [hello world](https://github.com/magicmark/LentilDI/blob/master/examples/hello_world/index.js) example for a 2 second introduction.
+
 ## Install
 
 ```
@@ -114,6 +116,109 @@ it('BrassSection should play some music', function () {
 
 ### More Examples
 Check out some full example apps [here](https://github.com/magicmark/LentilDI/tree/master/examples).
+
+## LentilDep
+
+You can specify different types of dependencies in your `lentilDeps` declaration.
+
+Currently, Lentil understands 3 types of dependencies.
+
+### LentilDep.Provided
+For cases where you might have an externally instantiated class (e.g. a logger) that you want to be available in your modules.
+
+You could either pass it as a constructor argument, or you could do the following:
+
+```javascript
+const logger = log4js.getLogger('My Logger');
+
+const lentil = new Lentil();
+lentil.provide('logger', logger);
+const myApp = lentil.create(myApp);
+```
+
+Your logger instance will now be available as normal through `this.logger` inside a Lentil module:
+
+```javascript
+class SomeModule {
+
+    static lentilDeps () {
+        return {
+            logger: LentilDep.Provided('logger'),
+        }
+    }
+    
+    doSomething() {
+        this.logger.info( ... );
+    }
+
+}
+```
+
+### LentilDep.Regular
+This is the default type where values are simply passed along to your module.
+
+Unless otherwise specified, this is how Lentil will treat a dependency.
+
+```javascript
+class SomeModule {
+
+    static lentilDeps () {
+        return {
+            whatever: 'Whatever',
+        }
+    }
+
+}
+```
+
+'Whatever' would now be available through `this.whatever`. (This is useful for built in objects such as `os`, `console` etc.)
+
+For the sake of clarity, note that this is functionally equivalent to the following:
+
+```javascript
+class SomeModule {
+
+    static lentilDeps () {
+        return {
+            // This is not recommended as Lentil can do this wrapping for us. 
+            whatever: LentilDep.Regular('Whatever'),
+        }
+    }
+
+}
+```
+
+### LentilDep.Lentil
+For sub-dependencies that you wish Lentil to also construct (i.e. other modules that extend from LentilBase.)
+
+Similar to LentilDep.Regular, you do not need to explicitly wrap modules in this; Lentil will do this for you.
+
+```javascript
+class SomeOtherModule {
+
+    static lentilDeps () {
+        return {
+            someModule: SomeModule,
+        }
+    }
+
+}
+```
+
+This is equivalent to the following:
+
+```javascript
+class SomeOtherModule {
+
+    static lentilDeps () {
+        return {
+            // This is not recommended as Lentil can do this wrapping for us. 
+            someModule: LentilDep.Lentil('Whatever'),
+        }
+    }
+
+}
+```
 
 ## Full Documentation
 Coming Soon
