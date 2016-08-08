@@ -9,7 +9,17 @@ module.exports = {
     "rules": {
         "comma-dangle": ["error", "always-multiline"],
         "indent": ["error", 4],
-        "new-cap": 0,
+
+        // Add Lentil API to whitelist
+        "new-cap": ["error", { 
+            "capIsNewExceptions": [
+                "LentilDep.Lentil",
+                "LentilDep.Regular",
+                "LentilDep.Provided",
+                "LentilDep.SingleInstance",
+            ]
+        }],
+
         // Allow private identifiers
         "no-underscore-dangle": 0,
     }

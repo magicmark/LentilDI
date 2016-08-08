@@ -201,13 +201,6 @@ export default class Lentil {
      * ====================================================
      */
 
-    _getAllDepDependencies(depInstance) {
-        if (!(depInstance instanceof LentilBase)) {
-            throw new Error('Cannot get dependencies for non LentilBase type object');
-        }
-
-        return this._depDependencies();
-    }
 
     /**
      * Adds LentilDep dependency to our dependency tree.
@@ -219,14 +212,14 @@ export default class Lentil {
         // Check to ensure dependency is something we need to handle.
         // Only LentilDepType.Lentil deps have dependencies that we can process.
         if (lentilDep.depType !== LentilDepType.Lentil) {
-            return;
+            return false;
         }
 
         const rawDep = lentilDep.requested;
 
         // Check if we've already seen and added this dependency.
         if (this._depDependencies.has(rawDep)) {
-            return;
+            return false;
         }
 
         // Create a reference back to Lentil on the dependency prototype, so we
@@ -247,6 +240,8 @@ export default class Lentil {
             const subDeps = this._getEncapsulatedLentilDeps(rawDep);
             this._depDependencies.set(rawDep, subDeps);
         }
+
+        return true;
     }
 
     /**
