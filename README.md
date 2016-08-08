@@ -41,7 +41,7 @@ lentil.setArgs(Conductor, ['Snoop Dogg']);
 const orchestra = lentil.create(Orchestra);
 ```
 
-## But wait, there's more!
+### Automatic Wiring
 
 Because you like to easily test your modules, you might be passing in all your dependencies (including built-in node modules) and wiring them up manually as such:
 
@@ -87,7 +87,39 @@ class BrassSection extends LentilBase {
     ...
 ```
 
+### Testing
 
----
+Testing modules is easy as pie - just create your module as normal!
+If you want to override anything in `lentilDeps`, just pass an object as the last argument to your constructor.
 
-**Note: this is still pre-release, use with caution**
+```javascript
+it('BrassSection should play some music', function () {
+    const dummyConductor = { ... };
+    const dummyTuba = { ... };
+    const dummyHorn = { ... };
+
+    // Note that we don't have to override fs or os
+    // We can let Lentil assign them as default values
+    const brassSection = new BrassSection({
+        conductor: dummyConductor,
+        tuba: dummyTuba,
+        horn: dummyHorn,
+    });
+    
+    brassSection.playMusic();
+
+    ...
+});
+```
+
+### More Examples
+Check out some full example apps [here](https://github.com/magicmark/LentilDI/tree/master/examples).
+
+## Full Documentation
+Coming Soon
+
+## Contributing
+Please do!
+
+## Why 'Lentil'?
+I like lentils
