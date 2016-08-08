@@ -115,7 +115,7 @@ it('BrassSection should play some music', function () {
 ```
 
 ### More Examples
-Check out some full example apps [here](https://github.com/magicmark/LentilDI/tree/master/examples).
+Check out some full example apps (with tests!) [here](https://github.com/magicmark/LentilDI/tree/master/examples).
 
 ## LentilDep
 
