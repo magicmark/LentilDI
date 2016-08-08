@@ -4,13 +4,13 @@ LentilDI
 ========
 [![travis](https://travis-ci.org/magicmark/LentilDI.svg?branch=master)](https://travis-ci.org/magicmark/LentilDI)
 [![Coverage Status](https://coveralls.io/repos/github/magicmark/LentilDI/badge.svg?branch=master)](https://coveralls.io/github/magicmark/LentilDI?branch=master)
-[![npm](https://img.shields.io/npm/v/lentildi.svg?maxAge=2592000)](https://www.npmjs.com/package/lentildi)
+[![npm](https://img.shields.io/npm/v/lentildi.svg)](https://www.npmjs.com/package/lentildi)
 
 Lightweight + Simple ES6 Dependency Injection :)
 
-**LentilDI** lets you build apps without the pain of having to wire up and manually manage your dependency tree, emphasising:
+**LentilDI** lets you build apps without the pain of having to instaniate, wire up, and manually manage your dependency tree. LentilDI emphasises:
 
-* Ease of testing of modules
+* Ease of module testing
 * Reduction of boilerplate dependency juggling
 
 ## Install
@@ -26,9 +26,10 @@ With LentilDI, you can go from something like this:
 ```javascript
 const tuba = new Tuba();
 const horn = new Horn();
+const percussion = new Percussion();
 const conductor = new Conductor('Snoop Dogg');
 const brassSection = new BrassSection(conductor, tuba, horn, fs, os);
-const orchestra = new Orchestra(conductor, brassSection);
+const orchestra = new Orchestra(conductor, brassSection, percussion);
 ```
 
 To something like this:
