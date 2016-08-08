@@ -13,7 +13,7 @@ Lightweight + Simple ES6 Dependency Injection :)
 * Ease of module testing
 * Reduction of boilerplate dependency juggling
 
-Check out the [hello world](https://github.com/magicmark/LentilDI/blob/master/examples/hello_world/index.js) example for a 2 second introduction.
+Check out the [hello world](https://github.com/magicmark/LentilDI/blob/master/examples/hello_world/index.js) example for a quick introduction.
 
 ## Install
 
@@ -121,7 +121,11 @@ Check out some full example apps [here](https://github.com/magicmark/LentilDI/tr
 
 You can specify different types of dependencies in your `lentilDeps` declaration.
 
-Currently, Lentil understands 3 types of dependencies.
+Currently, Lentil understands 3 types of dependencies:
+
+* LentilDep.Provided
+* LentilDep.Regular
+* LentilDep.Lentil
 
 ### LentilDep.Provided
 For cases where you might have an externally instantiated class (e.g. a logger) that you want to be available in your modules.
