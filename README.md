@@ -1,6 +1,10 @@
 ![LentilDI Logo](http://i.imgur.com/BKDQnkU.png)
 
-# LentilDI [![travis](https://travis-ci.org/magicmark/LentilDI.svg?branch=master)](https://travis-ci.org/magicmark/LentilDI) [![Coverage Status](https://coveralls.io/repos/github/magicmark/LentilDI/badge.svg?branch=master)](https://coveralls.io/github/magicmark/LentilDI?branch=master) [![npm](https://img.shields.io/npm/v/lentildi.svg)](https://www.npmjs.com/package/lentildi)
+LentilDI
+========
+[![travis](https://travis-ci.org/magicmark/LentilDI.svg?branch=master)](https://travis-ci.org/magicmark/LentilDI)
+[![Coverage Status](https://coveralls.io/repos/github/magicmark/LentilDI/badge.svg?branch=master)](https://coveralls.io/github/magicmark/LentilDI?branch=master)
+[![npm](https://img.shields.io/npm/v/lentildi.svg)](https://www.npmjs.com/package/lentildi)
 
 Lightweight + Simple ES6 Dependency Injection :)
 
