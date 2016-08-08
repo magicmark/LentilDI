@@ -8,7 +8,7 @@ LentilDI
 
 Lightweight + Simple ES6 Dependency Injection :)
 
-**LentilDI** lets you build apps without the pain of having to instaniate, wire up, and manually manage your dependency tree. LentilDI emphasises:
+**LentilDI** lets you build apps without the pain of having to instantiate, wire up, and manually manage your dependency tree. LentilDI emphasises:
 
 * Ease of module testing
 * Reduction of boilerplate dependency juggling
@@ -29,6 +29,7 @@ const horn = new Horn();
 const percussion = new Percussion();
 const conductor = new Conductor('Snoop Dogg');
 const brassSection = new BrassSection(conductor, tuba, horn, fs, os);
+...
 const orchestra = new Orchestra(conductor, brassSection, percussion);
 ```
 
