@@ -43,7 +43,7 @@ const orchestra = lentil.create(Orchestra);
 
 ## But wait, there's more!
 
-Because you like to easily test your modules, you might be passing in _all_ your dependencies (including built-in node modules) and wiring them up manually as such:
+Because you like to easily test your modules, you might be passing in all your dependencies (including built-in node modules) and wiring them up manually as such:
 
 ```javascript
 class BrassSection {
