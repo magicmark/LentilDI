@@ -173,7 +173,7 @@ class SomeModule extends LentilBase {
 }
 ```
 
-'Whatever' would now be available through `this.whatever`. (This is useful for built in objects such as `os`, `console` etc.)
+'Whatever' would now be available through `this.whatever`. (This is particularly useful for built in objects such as `os`, `console` etc.)
 
 For the sake of clarity, note that this is functionally equivalent to the following:
 
@@ -215,7 +215,7 @@ class SomeOtherModule extends LentilBase {
     static lentilDeps () {
         return {
             // This is not recommended as Lentil can do this wrapping for us. 
-            someModule: LentilDep.Lentil('Whatever'),
+            someModule: LentilDep.Lentil(SomeModule),
         }
     }
 
