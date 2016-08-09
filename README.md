@@ -224,6 +224,31 @@ class SomeOtherModule {
 }
 ```
 
+## Constructor Arguments
+You can pass in arguments to your modules (useful for one-offs such as config values).
+
+To do so, pass an array of arguments to `lentil.setArgs`:
+
+```javascript
+const lentil = new Lentil();
+lentil.setArgs(Conductor, ['Snoop Dogg']);
+...
+```
+
+Inside your module, your arguments are available as normal:
+
+```javascript
+class Conductor {
+
+    constructor (conductorName) {
+        console.log(`Orchestra is being conducted by ${conductorName}`);
+    }
+
+    ...
+
+}
+```
+
 ## Full Documentation
 Coming Soon
 
