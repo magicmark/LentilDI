@@ -1,5 +1,5 @@
-import LentilBase from './lentil-base.js';
-import LentilDep, { LentilDepType } from './lentil-dep.js';
+import LentilBase from './lentil_base.js';
+import LentilDep, { LentilDepType } from './lentil_dep.js';
 
 export default class Lentil {
 
@@ -217,30 +217,16 @@ export default class Lentil {
 
         const rawDep = lentilDep.requested;
 
-        // Check if we've already seen and added this dependency.
+        // Check if we've already seen and added this dependency subtree.
         if (this._depDependencies.has(rawDep)) {
             return false;
         }
 
-        // Create a reference back to Lentil on the dependency prototype, so we
-        // can access ourself later and ask for the sub-dependencies.
-        Object.defineProperty(
-            rawDep.prototype, '__lentil_context__', {
-                enumerable: false,
-                configurable: false,
-                writable: false,
-                value: this,
-            }
-        );
-
         // Check if this dep has any sub-deps. If so, we'll want to recursively
         // have LentilDI add them via this method.
-        if (rawDep.lentilDeps) {
-            // Get the deps declared from static lentilDeps ()
-            const subDeps = this._getEncapsulatedLentilDeps(rawDep);
-            this._depDependencies.set(rawDep, subDeps);
-        }
+        const subDeps = this._getEncapsulatedLentilDeps(rawDep);
 
+        this._depDependencies.set(rawDep, subDeps);
         return true;
     }
 
@@ -253,6 +239,10 @@ export default class Lentil {
      * @private
      */
     _getEncapsulatedLentilDeps(rawDep) {
+        if (!rawDep.lentilDeps) {
+            return {};
+        }
+
         const subDeps = rawDep.lentilDeps();
 
         Object.keys(subDeps).forEach(key => {
@@ -313,13 +303,12 @@ export default class Lentil {
         const lentilDepsList = this._getReverseBFS(rootLentilDep);
 
         for (const lentilDep of lentilDepsList) {
-            // Check if dependency needs initialising by us
-            if (lentilDep.depType !== LentilDepType.Lentil) {
-                continue;
-            }
-
-            // Check if dependency has already been initialised
-            if (!this._depInstances.has(lentilDep.requested)) {
+            if (
+                // Check if dependency needs initialising by us
+                (lentilDep.depType === LentilDepType.Lentil) &&
+                // Check dependency has not yet already been initialised
+                (!this._depInstances.has(lentilDep.requested))
+            ) {
                 this._initialiseDep(lentilDep);
             }
         }
@@ -348,7 +337,7 @@ export default class Lentil {
 
         // Create dependency instance.
         const depInstance = Reflect.construct(lentilDep.requested,
-            [].concat(extraArgs).concat(subDeps)
+            [].concat(extraArgs).concat(subDeps).concat(this)
         );
 
         // Store dep instance

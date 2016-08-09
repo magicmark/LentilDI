@@ -2,10 +2,9 @@ import 'mocha';
 
 import chai from 'chai';
 import sinon from 'sinon';
-
 import Lentil from 'LentilDI/lib/lentil.js';
-import LentilBase from 'LentilDI/lib/lentil-base.js';
-import LentilDep, { LentilDepType } from 'LentilDI/lib/lentil-dep.js';
+import LentilBase from 'LentilDI/lib/lentil_base.js';
+import LentilDep, { LentilDepType } from 'LentilDI/lib/lentil_dep.js';
 
 describe('Lentil', function () {
 
@@ -129,7 +128,7 @@ describe('Lentil', function () {
             dummyLentilDep = {};
 
             chai.assert.throws(function () {
-                lentil.resolveLentilDep({});            
+                lentil.resolveLentilDep({});
             });
         });
 
@@ -137,8 +136,8 @@ describe('Lentil', function () {
             const dummyInstance = {};
             sandbox.stub(lentil._depInstances, 'get').returns(dummyInstance);
 
-            dummyLentilDep.depType = LentilDepType.Lentil; 
-            
+            dummyLentilDep.depType = LentilDepType.Lentil;
+
             const returnedInstance = lentil.resolveLentilDep(dummyLentilDep);
             chai.assert.equal(returnedInstance, dummyInstance);
         });
@@ -148,7 +147,7 @@ describe('Lentil', function () {
             sandbox.stub(lentil._providedDeps, 'get').returns(dummyInstance);
 
             dummyLentilDep.depType = LentilDepType.Provided;
-            
+
             const returnedInstance = lentil.resolveLentilDep(dummyLentilDep);
             chai.assert.equal(returnedInstance, dummyInstance);
         });
@@ -157,8 +156,8 @@ describe('Lentil', function () {
             const dummyInstance = {};
 
             dummyLentilDep.depType = LentilDepType.Regular;
-            dummyLentilDep.requested = dummyInstance;    
-            
+            dummyLentilDep.requested = dummyInstance;
+
             const returnedInstance = lentil.resolveLentilDep(dummyLentilDep);
             chai.assert.equal(returnedInstance, dummyInstance);
         });
@@ -167,7 +166,7 @@ describe('Lentil', function () {
             dummyLentilDep.depType = LentilDepType.SingleInstance;
 
             chai.assert.throws(function () {
-                lentil.resolveLentilDep(dummyLentilDep);            
+                lentil.resolveLentilDep(dummyLentilDep);
             });
         });
 
@@ -177,7 +176,7 @@ describe('Lentil', function () {
             dummyLentilDep.depType = 'derp';
 
             chai.assert.throws(function () {
-                lentil.resolveLentilDep(dummyLentilDep);            
+                lentil.resolveLentilDep(dummyLentilDep);
             });
         });
     });
@@ -204,27 +203,18 @@ describe('Lentil', function () {
             chai.assert.isFalse(lentil._addDependency(dummyLentilDep));
         });
 
-        it('should add a new dependency', function () {
-            sandbox.stub(lentil._depDependencies, 'has').returns(false);
-
-            lentil._addDependency(dummyLentilDep);
-
-            chai.assert.isOk(dummyLentilDep.requested.prototype.__lentil_context__);
-        });
-
         it('should add a new dependency and store sub-dependencies', function () {
-            dummyLentilDep.requested.lentilDeps = {};
+            const dummySubDeps = {};
 
-            sandbox.stub(lentil._depDependencies, 'has').returns(false);
+            sandbox.stub(lentil, '_getEncapsulatedLentilDeps').returns(dummySubDeps);
             sandbox.stub(lentil._depDependencies, 'set');
-            sandbox.stub(lentil, '_getEncapsulatedLentilDeps');
 
             lentil._addDependency(dummyLentilDep);
 
-            chai.assert(lentil._getEncapsulatedLentilDeps.called);
-            chai.assert(lentil._depDependencies.set.called);
-        });        
+            chai.assert(lentil._getEncapsulatedLentilDeps.calledWith(dummyLentilDep.requested));
+            chai.assert(lentil._depDependencies.set.calledWith(dummyLentilDep.requested, dummySubDeps));
+        });
     });
 
-    
+
 });

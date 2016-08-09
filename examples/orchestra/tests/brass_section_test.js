@@ -1,4 +1,5 @@
 import 'mocha';
+
 import sinon from 'sinon';
 
 import BrassSection from '../lib/brass_section.js';
