@@ -128,14 +128,14 @@ Currently, Lentil understands 3 types of dependencies:
 * LentilDep.Lentil
 
 ### LentilDep.Provided
-For cases where you might have an externally instantiated class (e.g. a logger) that you want to be available in your modules:
+For cases where you might have an externally instantiated class (e.g. a logger) that you want to be available in any of your modules:
 
 ```javascript
 const logger = log4js.getLogger('My Logger');
 
 const lentil = new Lentil();
 lentil.provide('logger', logger);
-const myApp = lentil.create(myApp);
+const myApp = lentil.create(MyApp);
 ```
 
 Your logger instance will now be available as normal through `this.logger` inside a Lentil module:
