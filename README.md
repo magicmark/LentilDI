@@ -128,16 +128,14 @@ Currently, Lentil understands 3 types of dependencies:
 * LentilDep.Lentil
 
 ### LentilDep.Provided
-For cases where you might have an externally instantiated class (e.g. a logger) that you want to be available in your modules.
-
-You could either pass it as a constructor argument, or you could do the following:
+For cases where you might have an externally instantiated class (e.g. a logger) that you want to be available in any of your modules:
 
 ```javascript
 const logger = log4js.getLogger('My Logger');
 
 const lentil = new Lentil();
 lentil.provide('logger', logger);
-const myApp = lentil.create(myApp);
+const myApp = lentil.create(MyApp);
 ```
 
 Your logger instance will now be available as normal through `this.logger` inside a Lentil module:
@@ -175,7 +173,7 @@ class SomeModule extends LentilBase {
 }
 ```
 
-'Whatever' would now be available through `this.whatever`. (This is useful for built in objects such as `os`, `console` etc.)
+'Whatever' would now be available through `this.whatever`. (This is particularly useful for built in objects such as `os`, `console` etc.)
 
 For the sake of clarity, note that this is functionally equivalent to the following:
 
@@ -217,7 +215,7 @@ class SomeOtherModule extends LentilBase {
     static lentilDeps () {
         return {
             // This is not recommended as Lentil can do this wrapping for us.
-            someModule: LentilDep.Lentil('Whatever'),
+            someModule: LentilDep.Lentil(SomeModule),
         }
     }
 
