@@ -43,9 +43,9 @@ lentil.setArgs(Conductor, ['Snoop Dogg']);
 const orchestra = lentil.create(Orchestra);
 ```
 
-### Automatic Wiring
+### Automatic Dependency Wiring
 
-Because you like to easily test your modules, you might be passing in all your dependencies (including built-in node modules) and wiring them up manually as such:
+Typically, we might pass in our dependencies (including built-in objects) and bind them to `this` in large constructors such as this:
 
 ```javascript
 class BrassSection {
