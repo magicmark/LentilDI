@@ -48,7 +48,7 @@ const orchestra = lentil.create(Orchestra);
 Typically, we might pass in our dependencies (including built-in objects) and bind them to `this` in large constructors such as this:
 
 ```javascript
-class BrassSection {
+class BrassSection extends LentilBase {
 
     constructor (conductor, tuba, horn, fs, os) {
         this.conductor = conductor;
@@ -143,7 +143,7 @@ const myApp = lentil.create(myApp);
 Your logger instance will now be available as normal through `this.logger` inside a Lentil module:
 
 ```javascript
-class SomeModule {
+class SomeModule extends LentilBase {
 
     static lentilDeps () {
         return {
@@ -164,7 +164,7 @@ This is the default type where values are simply passed along to your module.
 Unless otherwise specified, this is how Lentil will treat a dependency.
 
 ```javascript
-class SomeModule {
+class SomeModule extends LentilBase {
 
     static lentilDeps () {
         return {
@@ -180,7 +180,7 @@ class SomeModule {
 For the sake of clarity, note that this is functionally equivalent to the following:
 
 ```javascript
-class SomeModule {
+class SomeModule extends LentilBase {
 
     static lentilDeps () {
         return {
@@ -198,7 +198,7 @@ For sub-dependencies that you wish Lentil to also construct (i.e. other modules 
 Similar to LentilDep.Regular, you do not need to explicitly wrap modules in this; Lentil will do this for you.
 
 ```javascript
-class SomeOtherModule {
+class SomeOtherModule extends LentilBase {
 
     static lentilDeps () {
         return {
@@ -212,7 +212,7 @@ class SomeOtherModule {
 This is equivalent to the following:
 
 ```javascript
-class SomeOtherModule {
+class SomeOtherModule extends LentilBase {
 
     static lentilDeps () {
         return {
@@ -235,12 +235,16 @@ lentil.setArgs(Conductor, ['Snoop Dogg']);
 ...
 ```
 
-Inside your module, your arguments are available as normal:
+Inside your module, your arguments are available as normal.
+
+(Remember to call `super`.)
 
 ```javascript
-class Conductor {
+class Conductor extends LentilBase {
 
-    constructor (conductorName) {
+    constructor (conductorName, ...args) {
+        super(...args);
+
         console.log(`Orchestra is being conducted by ${conductorName}`);
     }
 
