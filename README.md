@@ -123,9 +123,9 @@ You can specify different types of dependencies in your `lentilDeps` declaration
 
 Currently, Lentil understands 3 types of dependencies:
 
-* LentilDep.Provided
-* LentilDep.Regular
-* LentilDep.Lentil
+* `LentilDep.Provided`
+* `LentilDep.Regular`
+* `LentilDep.Lentil`
 
 ### LentilDep.Provided
 For cases where you might have an externally instantiated class (e.g. a logger) that you want to be available in any of your modules:
