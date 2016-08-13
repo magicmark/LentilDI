@@ -18,6 +18,9 @@ describe('LentilBase', function () {
     beforeEach(function () {
         sandbox = sinon.sandbox.create();
         lentil = new Lentil();
+
+        // Each test should construct lentilBase to avoid side effects
+        lentilBase = null;
     });
 
 
@@ -55,13 +58,13 @@ describe('LentilBase', function () {
         });
 
         it('should construct and assign deps', function () {
-            const dummyDepsToWire = {
+            const dummyDeps = {
                 dummyDepKey: 'dummyDepValue',
             };
 
             sandbox.stub(lentil, 'resolveLentilDep').returns('resolvedDep');
 
-            lentilBase.__constructorWithLentil__(dummyDepsToWire, lentil);
+            lentilBase.__constructorWithLentil__(dummyDeps, lentil);
 
             chai.assert.equal(lentilBase.dummyDepKey, 'resolvedDep');
         });
@@ -73,15 +76,50 @@ describe('LentilBase', function () {
 
         beforeEach(function () {
             lentilBase = new LentilBase();
+            lentilBase.constructor.lentilDeps = () => ({});
         });
 
         it('should construct with no deps', function () {
+            delete lentilBase.constructor.lentilDeps;
+
             lentilBase.__constructorWithoutLentil__();
         });
 
-        // TODO: continue tests
+        it('should construct with deps with no overwrites', function () {
+            const dummyDeps = {
+                dummyDepKey: 'dummyDepValue',
+            };
 
+            sandbox.stub(lentilBase.constructor, 'lentilDeps').returns(dummyDeps);
+            lentilBase.__constructorWithoutLentil__();
+
+            chai.assert.equal(lentilBase.dummyDepKey, dummyDeps.dummyDepKey)
+        });
+
+        it('should fail trying to create a LentilDep', function () {
+            const dummyDeps = {
+                dummyLentilDepKey: LentilDep.Lentil({})
+            };
+
+            sandbox.stub(lentilBase.constructor, 'lentilDeps').returns(dummyDeps);
+
+            chai.assert.throws(function () {
+                lentilBase.__constructorWithoutLentil__();
+            });
+        });
+
+        it('should construct with deps with overwrites', function () {
+            const dummyDeps = {
+                dummyDepKey: 'dummyDepValue',
+            };
+
+            sandbox.stub(lentilBase.constructor, 'lentilDeps').returns(dummyDeps);
+            lentilBase.__constructorWithoutLentil__({
+                dummyDepKey: 'overwrittenDepValue'
+            });
+
+            chai.assert.equal(lentilBase.dummyDepKey, 'overwrittenDepValue')
+        });
     });
-
 
 });

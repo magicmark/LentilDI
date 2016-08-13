@@ -46,6 +46,7 @@ const LentilDepType = {};
  * @return {LentilDep} An encapsulated dependency
  */
 const _getLentilDep = (requested, depType) => ({
+    // TODO: Throw error if depType is .Lentil and requested doesn't extend from LentilBase
     // TODO: Possibly make 'isLentilDep' more robust
     isLentilDep: true,
     depType,
