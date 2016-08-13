@@ -62,7 +62,7 @@ class BrassSection extends LentilBase {
         const sheetMusic = this.conductor.getScore();
         this.fs.readFile(sheetMusic, ...
     }
-    
+
     ...
 ```
 
@@ -80,12 +80,12 @@ class BrassSection extends LentilBase {
             os,
         }
     }
-    
+
     loadSheetMusic () {
         const sheetMusic = this.conductor.getScore();
         this.fs.readFile(sheetMusic, ...
     }
-    
+
     ...
 ```
 
@@ -107,7 +107,7 @@ it('BrassSection should play some music', function () {
         tuba: dummyTuba,
         horn: dummyHorn,
     });
-    
+
     brassSection.playMusic();
 
     ...
@@ -148,7 +148,7 @@ class SomeModule extends LentilBase {
             logger: LentilDep.Provided('logger'),
         }
     }
-    
+
     doSomething() {
         this.logger.info( ... );
     }
@@ -182,7 +182,7 @@ class SomeModule extends LentilBase {
 
     static lentilDeps () {
         return {
-            // This is not recommended as Lentil can do this wrapping for us. 
+            // This is not recommended as Lentil can do this wrapping for us.
             whatever: LentilDep.Regular('Whatever'),
         }
     }
@@ -214,7 +214,7 @@ class SomeOtherModule extends LentilBase {
 
     static lentilDeps () {
         return {
-            // This is not recommended as Lentil can do this wrapping for us. 
+            // This is not recommended as Lentil can do this wrapping for us.
             someModule: LentilDep.Lentil(SomeModule),
         }
     }

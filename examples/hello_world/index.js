@@ -3,7 +3,6 @@ import {
     LentilBase,
 } from 'lentildi';
 
-
 class French extends LentilBase {
 
     sayBonjour() {

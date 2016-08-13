@@ -1,6 +1,6 @@
 import 'mocha';
-import sinon from 'sinon';
 
+import sinon from 'sinon';
 import Percussion from 'lib/percussion.js';
 
 describe('Percussion', function () {

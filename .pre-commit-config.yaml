@@ -15,3 +15,4 @@
     hooks:
     -   id: eslint
         additional_dependencies: ['eslint', 'eslint-config-airbnb', 'eslint-plugin-jsx-a11y', 'eslint-plugin-react', 'eslint-plugin-import']
+        args: [--quiet, --fix]

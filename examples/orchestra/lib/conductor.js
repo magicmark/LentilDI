@@ -1,8 +1,7 @@
+import path from 'path';
 import {
     LentilBase,
 } from 'lentildi';
-
-import path from 'path';
 
 export default class Conductor extends LentilBase {
 

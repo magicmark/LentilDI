@@ -11,7 +11,7 @@ module.exports = {
         "indent": ["error", 4],
 
         // Add Lentil API to whitelist
-        "new-cap": ["error", { 
+        "new-cap": ["error", {
             "capIsNewExceptions": [
                 "LentilDep.Lentil",
                 "LentilDep.Regular",

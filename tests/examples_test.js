@@ -2,9 +2,7 @@ import 'mocha';
 
 import chai from 'chai';
 import sinon from 'sinon';
-
 import { exec } from 'child_process';
-
 
 describe('Examples', function () {
 
@@ -14,7 +12,7 @@ describe('Examples', function () {
             'Ciao Mondo!',
         ].join('\n');
 
-        exec('node build-examples/hello_world/index.js', (err, stdout, stderr) => { 
+        exec('node build-examples/hello_world/index.js', (err, stdout, stderr) => {
             if (err || stderr) {
                 throw new Error(err, stderr);
             }
@@ -32,7 +30,7 @@ describe('Examples', function () {
             'Playing the small drums at 108BPM!',
         ].join('\n');
 
-        exec('node build-examples/orchestra/index.js', (err, stdout, stderr) => { 
+        exec('node build-examples/orchestra/index.js', (err, stdout, stderr) => {
             if (err || stderr) {
                 throw new Error(err, stderr);
             }

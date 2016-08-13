@@ -1,8 +1,14 @@
-language: node_js
-node_js:
-- 6
+sudo: false
+language: python
+python:
+  - "3.5"
+install:
+  - nvm install 6
+env:
+    global:
+    - COVERALLS_SERVICE_NAME=travis-ci
+    - COVERALLS_REPO_TOKEN=DuPePSbSIEBFJflIrg1MW4oI0JzfkvOIz
 script:
-- make eslint
 - make test
 - make coveralls
 deploy:
