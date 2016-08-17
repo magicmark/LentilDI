@@ -5,7 +5,9 @@
 .travis.yml
 Makefile
 tests
-
+venv
+requirements-dev.txt
+.env
 build-examples
 coverage
 npm-debug.log

@@ -14,7 +14,7 @@ test: venv build build-examples
 
 .PHONY: build
 build: node_modules
-	./node_modules/.bin/babel -d build LentilDI --no-comments
+	./node_modules/.bin/babel -d dist src --no-comments
 
 .PHONY: build-examples
 build-examples: node_modules link-local-lentil
@@ -46,9 +46,9 @@ eslint-fix: node_modules
 	node_modules/.bin/eslint --fix .
 
 clean:
-	rm -rf build
+	rm -rf dist
 	rm -rf build-examples
 	rm -rf coverage
-	rm -rf jsodc
+	rm -rf jsdoc
 	rm -rf node_modules
 	rm -rf venv
