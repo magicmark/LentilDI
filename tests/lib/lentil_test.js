@@ -217,4 +217,63 @@ describe('Lentil', function () {
     });
 
 
+    describe('#_getEncapsulatedLentilDeps', function () {
+
+        const encapsulatedLentilDep = {};
+
+        beforeEach(function () {
+            sandbox.stub(lentil, '_addDependency');
+        });
+
+        it('should do nothing with no lentileps', function () {
+            const actualDeps = lentil._getEncapsulatedLentilDeps({});
+            chai.assert.deepEqual({}, actualDeps);
+        });
+
+        it('should do nothing with already encapsulated deps', function () {
+            const dummyDeps = {
+                foo: { isLentilDep: true }
+            };
+
+            const rawDep = {
+                lentilDeps: () => dummyDeps
+            };
+
+            const returnedDeps = lentil._getEncapsulatedLentilDeps(rawDep);
+
+            chai.assert(returnedDeps, dummyDeps);
+            chai.assert(lentil._addDependency.calledWith(dummyDeps.foo));
+        });
+
+        it('should encapsulate lentil-type deps', function () {
+            const rawDep = {
+                lentilDeps: () => ({
+                    foo: {}
+                })
+            };
+
+            sandbox.stub(Lentil, '_isLentil').returns(true);
+            sandbox.stub(LentilDep, 'Lentil').returns(encapsulatedLentilDep);
+
+            lentil._getEncapsulatedLentilDeps(rawDep)
+
+            chai.assert(lentil._addDependency.calledWith(encapsulatedLentilDep));
+        });
+
+        it('should encapsulate regular deps', function () {
+            const rawDep = {
+                lentilDeps: () => ({
+                    foo: {}
+                })
+            };
+
+            sandbox.stub(Lentil, '_isLentil').returns(false);
+            sandbox.stub(LentilDep, 'Regular').returns(encapsulatedLentilDep);
+
+            lentil._getEncapsulatedLentilDeps(rawDep);
+
+            chai.assert(lentil._addDependency.calledWith(encapsulatedLentilDep));
+        });
+    });
+
 });

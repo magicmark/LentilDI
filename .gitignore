@@ -3,7 +3,7 @@ dist
 build-examples
 coverage
 npm-debug.log
-.swp
+*.swp
 jsdoc
 venv
 

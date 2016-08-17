@@ -25,13 +25,6 @@ const LentilDepType = {};
      * A dependency that was provided to LentilDI using .provide().
      */
     'Provided',
-
-    /**
-     * LentilDepType.SingleInstance
-     *
-     * Only one instance of the passed object will be created.
-     */
-    'SingleInstance',
 ].forEach(depTypeString => {
     LentilDepType[depTypeString] = Symbol(depTypeString);
 });
@@ -57,9 +50,6 @@ const _getLentilDep = (requested, depType) => ({
 const Lentil = (depObject) => _getLentilDep(depObject, LentilDepType.Lentil);
 const Regular = (depObject) => _getLentilDep(depObject, LentilDepType.Regular);
 const Provided = (depName) => _getLentilDep(depName, LentilDepType.Provided);
-const SingleInstance = () => {
-    throw new Error('This is not yet implemented!');
-};
 
 export { LentilDepType };
 
@@ -67,5 +57,4 @@ export default {
     Regular,
     Lentil,
     Provided,
-    SingleInstance,
 };
