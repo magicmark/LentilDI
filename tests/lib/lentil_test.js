@@ -365,7 +365,7 @@ describe('Lentil', function () {
             chai.assert(lentil._depInstances.set.notCalled);
         });
 
-        it('should do nothing with an already set dep', function () {
+        it('should set a new dep', function () {
             const dummyExtraArgs = {};
             const dummySubDeps = {};
 
