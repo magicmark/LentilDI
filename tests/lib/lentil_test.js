@@ -276,4 +276,108 @@ describe('Lentil', function () {
         });
     });
 
+
+    describe('#_getReverseBFS', function () {
+
+        /**
+         * We will construct the following tree:
+         *
+         *       A
+         *      / \
+         *     B   C
+         *    /
+         *   D
+         *
+         * And assert the following returned traversal:
+         * [D, C, B, A]
+         */
+
+        it('should return a reversed BFS traversal of tree', function () {
+            const nodes = {
+                A: { name: 'A', requested: {} },
+                B: { name: 'B', requested: {} },
+                C: { name: 'C', requested: {} },
+                D: { name: 'D', requested: {} },
+            };
+
+            lentil._depDependencies.set(nodes.B.requested, {
+                'D': nodes.D
+            });
+
+            lentil._depDependencies.set(nodes.A.requested, {
+                'B': nodes.B,
+                'C': nodes.C,
+            });
+
+            const reversedBFS = lentil._getReverseBFS(nodes.A);
+            const list = reversedBFS.map(node => node.name);
+
+            chai.assert.deepEqual(list, ['D', 'C', 'B', 'A']);
+        });
+    });
+
+
+    describe('#_initialiseAllDeps', function () {
+        it('should intialise deps correctly', function () {
+            const requested = {};
+            const dummyLentilDepsList = [
+                { depType: LentilDepType.Lentil, requested },
+                { depType: LentilDepType.Lentil, requested: 'ds' },
+                {},
+            ];
+
+            lentil._depInstances.set(requested, {});
+            sandbox.stub(lentil, '_getReverseBFS').returns(dummyLentilDepsList);
+            sandbox.stub(lentil, '_initialiseDep');
+
+            lentil._initialiseAllDeps('foo');
+
+            chai.assert(lentil._getReverseBFS.calledWith('foo'));
+            chai.assert(lentil._initialiseDep.calledWith(dummyLentilDepsList[1]));
+            chai.assert(lentil._initialiseDep.calledOnce);
+        });
+    });
+
+
+    describe('#_initialiseDep', function () {
+
+        let dummyDep;
+
+        beforeEach(function () {
+            dummyDep = {
+                depType: LentilDepType.Lentil,
+                requested: sandbox.stub(),
+            };
+            sandbox.stub(lentil._depInstances, 'set');
+       });
+
+        it('should do nothing with a non-lentil type dep', function () {
+            lentil._initialiseDep({});
+
+            chai.assert(lentil._depInstances.set.notCalled);
+        });
+
+        it('should do nothing with an already set dep', function () {
+            sandbox.stub(lentil._depInstances, 'has').returns(true);
+
+            lentil._initialiseDep(dummyDep);
+
+            chai.assert(lentil._depInstances.set.notCalled);
+        });
+
+        it('should do nothing with an already set dep', function () {
+            const dummyExtraArgs = {};
+            const dummySubDeps = {};
+
+            sandbox.stub(lentil._depInstances, 'has').returns(false);
+            sandbox.stub(lentil._depArgList, 'get').returns(dummyExtraArgs);
+            sandbox.stub(lentil._depDependencies, 'get').returns(dummySubDeps);
+
+            lentil._initialiseDep(dummyDep);
+
+            chai.assert(dummyDep.requested.calledWith(dummyExtraArgs, dummySubDeps));
+            chai.assert(lentil._depInstances.set.calledWith(dummyDep.requested));
+        });
+
+    });
 });
