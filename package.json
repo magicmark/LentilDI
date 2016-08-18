@@ -1,43 +1,63 @@
 {
-  "name": "lentildi",
-  "version": "0.2.1",
-  "description": "Lightweight Dependency Injection for JavaScript apps",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "make test",
-    "prepublish": "make build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/magicmark/LentilDI.git"
-  },
-  "keywords": [
-    "di",
-    "dependency",
-    "injection",
-    "lentils"
-  ],
-  "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-preset-es2015": "^6.9.0",
-    "chai": "^3.5.0",
-    "coveralls": "^2.11.12",
-    "eslint": "^3.1.0",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-plugin-import": "^1.10.3",
-    "eslint-plugin-jsx-a11y": "^2.0.1",
-    "eslint-plugin-react": "^5.2.2",
-    "istanbul": "^1.1.0-alpha.1",
-    "jsdoc": "^3.4.0",
-    "jsdoc-babel": "^0.2.1",
-    "mocha": "^2.5.3",
-    "mocha-lcov-reporter": "^1.2.0",
-    "sinon": "^1.17.4"
-  },
-  "author": "Mark Larah <mark@larah.me>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/magicmark/LentilDI/issues"
-  },
-  "homepage": "https://github.com/magicmark/LentilDI#readme"
+    "name": "lentildi",
+    "version": "0.2.1",
+    "description": "Lightweight Dependency Injection for JavaScript apps",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "NODE_PATH=. nyc mocha -C --require babel-core/register tests/**.js tests/**/*.js",
+        "prepublish": "make build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/magicmark/LentilDI.git"
+    },
+    "keywords": [
+        "di",
+        "dependency",
+        "injection",
+        "lentils"
+    ],
+    "devDependencies": {
+        "babel-cli": "^6.10.1",
+        "babel-preset-es2015": "^6.9.0",
+        "chai": "^3.5.0",
+        "coveralls": "^2.11.12",
+        "eslint": "^3.1.0",
+        "eslint-config-airbnb": "^9.0.1",
+        "eslint-plugin-import": "^1.10.3",
+        "eslint-plugin-jsx-a11y": "^2.0.1",
+        "eslint-plugin-react": "^5.2.2",
+        "jsdoc": "^3.4.0",
+        "jsdoc-babel": "^0.2.1",
+        "mocha": "^2.5.3",
+        "mocha-lcov-reporter": "^1.2.0",
+        "nyc": "^8.1.0",
+        "sinon": "^1.17.4"
+    },
+    "author": "Mark Larah <mark@larah.me>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/magicmark/LentilDI/issues"
+    },
+    "homepage": "https://github.com/magicmark/LentilDI#readme",
+    "nyc": {
+        "lines": 100,
+        "branches": 80,
+        "functions": 80,
+        "reporter": [
+            "text",
+            "lcov",
+            "html"
+        ],
+        "require": [
+            "babel-register"
+        ],
+        "exclude": [
+            "dist/**/*.js",
+            "tests",
+            "build-examples",
+            "node_modules"
+        ],
+        "check-coverage": true
+    }
 }

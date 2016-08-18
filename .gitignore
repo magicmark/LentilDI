@@ -1,7 +1,9 @@
 node_modules
+
 dist
 build-examples
 coverage
+.nyc_output
 npm-debug.log
 *.swp
 jsdoc
