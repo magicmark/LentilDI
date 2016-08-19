@@ -187,10 +187,6 @@ export default class Lentil {
             return lentilDep.requested;
         }
 
-        if (lentilDep.depType === LentilDepType.SingleInstance) {
-            throw new Error('This is not yet implemented!');
-        }
-
         throw new Error(`Cannot resolve dependency for ${lentilDep}`);
     }
 
@@ -251,7 +247,6 @@ export default class Lentil {
             // Check if subDep is already encapsulated
             if (!subDep.isLentilDep) {
                 // Turn a dep into a LentilDep
-
                 if (Lentil._isLentil(subDep)) {
                     subDeps[key] = LentilDep.Lentil(subDep);
                 } else {

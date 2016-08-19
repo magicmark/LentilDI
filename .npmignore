@@ -5,8 +5,11 @@
 .travis.yml
 Makefile
 tests
-
+venv
+requirements-dev.txt
+.env
 build-examples
 coverage
+.nyc_output
 npm-debug.log
 .swp

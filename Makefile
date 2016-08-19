@@ -8,13 +8,16 @@ venv: Makefile requirements-dev.txt
 
 .PHONY: test
 test: venv build build-examples
-	NODE_PATH=. ./node_modules/.bin/mocha -C --require babel-core/register tests/**.js tests/**/*.js
+	# Run unit tests + coverage
+	npm test
+	# Test examples
 	NODE_PATH=build-examples/orchestra ./node_modules/.bin/mocha -C build-examples/orchestra/tests/**.js
+	# Run pre-commit hooks
 	venv/bin/pre-commit run --all-files
 
 .PHONY: build
 build: node_modules
-	./node_modules/.bin/babel -d build LentilDI --no-comments
+	./node_modules/.bin/babel -d dist src --no-comments
 
 .PHONY: build-examples
 build-examples: node_modules link-local-lentil
@@ -28,11 +31,7 @@ link-local-lentil:
 node_modules:
 	npm install
 
-.PHONY: coverage
-coverage: build build-examples
-	NODE_PATH=. ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -C -R spec tests/**.js tests/**/*.js --compilers js:babel-register
-
-coveralls: coverage
+coveralls: coverage node_modules
 	cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
 .PHONY: jsdoc
@@ -46,9 +45,10 @@ eslint-fix: node_modules
 	node_modules/.bin/eslint --fix .
 
 clean:
-	rm -rf build
+	rm -rf dist
 	rm -rf build-examples
 	rm -rf coverage
-	rm -rf jsodc
+	rm -rf .nyc_output
+	rm -rf jsdoc
 	rm -rf node_modules
 	rm -rf venv

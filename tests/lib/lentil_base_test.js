@@ -2,12 +2,12 @@ import 'mocha';
 
 import chai from 'chai';
 import sinon from 'sinon';
-import Lentil from 'LentilDI/lib/lentil.js';
+import Lentil from 'src/lib/lentil.js';
 import LentilBase, {
     constructorWithLentil,
     constructorWithoutLentil,
-} from 'LentilDI/lib/lentil_base.js';
-import LentilDep, { LentilDepType } from 'LentilDI/lib/lentil_dep.js';
+} from 'src/lib/lentil_base.js';
+import LentilDep, { LentilDepType } from 'src/lib/lentil_dep.js';
 
 describe('LentilBase', function () {
 

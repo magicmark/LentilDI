@@ -1,9 +1,11 @@
 node_modules
-build
+
+dist
 build-examples
 coverage
+.nyc_output
 npm-debug.log
-.swp
+*.swp
 jsdoc
 venv
 
