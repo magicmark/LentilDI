@@ -10,8 +10,8 @@ Lightweight + Simple ES6 Dependency Injection :)
 
 **LentilDI** lets you build apps without the pain of having to instantiate, wire up, and manually manage your dependency tree. LentilDI emphasises:
 
-* Ease of module testing
 * Reduction of boilerplate dependency juggling
+* Ease of module testing
 
 Check out the [hello world](https://github.com/magicmark/LentilDI/blob/master/examples/hello_world/index.js) example for a quick introduction.
 
@@ -259,3 +259,6 @@ Please do!
 
 ## Why 'Lentil'?
 I like lentils
+
+## Licence
+MIT

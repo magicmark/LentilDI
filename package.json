@@ -35,7 +35,7 @@
     "sinon": "^1.17.4"
   },
   "author": "Mark Larah <mark@larah.me>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/magicmark/LentilDI/issues"
   },
